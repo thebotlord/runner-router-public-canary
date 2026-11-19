@@ -1,0 +1,19 @@
+name: Runner provider probe
+run-name: Runner provider probe (${{ inputs.runner }})
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        required: true
+        type: choice
+        options: [ubuntu-24.04]
+permissions: {}
+jobs:
+  probe:
+    if: inputs.runner == 'ubuntu-24.04'
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 1
+    steps:
+      - name: Report actual runner identity
+        shell: bash
+        run: node -e 'console.log(JSON.stringify({canary:"automatic-quota-recovery",os:process.platform,arch:process.arch,runner:process.env.RUNNER_NAME,environment:process.env.RUNNER_ENVIRONMENT}))'
