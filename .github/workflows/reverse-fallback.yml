@@ -5,9 +5,9 @@ on:
 permissions: {}
 jobs:
   identity:
-    runs-on: ${{ fromJSON(vars.CANARY_RUNNER) }}
+    runs-on: ${{ vars.CI_ROUTER_PUBLIC_CANARY }}
     timeout-minutes: 1
     steps:
       - name: Print harmless runner identity
         shell: bash
-        run: node -e 'console.log(JSON.stringify({canary:"reverse-fallback",platform:process.platform,arch:process.arch,runner:process.env.RUNNER_NAME,environment:process.env.RUNNER_ENVIRONMENT}))'
+        run: node -e 'console.log(JSON.stringify({canary:"cloudflare-dispatcher-reverse-fallback",platform:process.platform,arch:process.arch,runner:process.env.RUNNER_NAME,environment:process.env.RUNNER_ENVIRONMENT,attempt:process.env.GITHUB_RUN_ATTEMPT}))'

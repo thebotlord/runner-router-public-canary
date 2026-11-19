@@ -1,17 +1,21 @@
 # Public runner fallback canary
 
-This repository contains only this notice and a harmless runner-identity workflow.
-It contains no product source code, credentials, secrets, external actions, or checkout step.
+This repository contains only this notice and one harmless runner-identity workflow.
+It contains no product source code, credentials, secrets, dependencies, external
+actions, checkout step, cache, or artifact upload. Workflow token permissions are empty.
 
-The outage attempt deliberately requests the router's hold label, with no provider
-label. After a ten-minute queue timeout, an isolated local controller
-uses the production router's unchanged selection and retry policy to cancel the
-unstarted attempt and rerun it on the free standard GitHub ubuntu-24.04 runner.
+The live Cloudflare dispatcher test queues the workflow on its dedicated hold label.
+The deployed dispatcher receives GitHub's signed webhook, enforces its ten-minute
+queue timeout, cancels only an unstarted job, confirms completed cancellation,
+persists one retry claim, and changes only CI_ROUTER_PUBLIC_CANARY to ubuntu-24.04.
+The same run must finish on attempt 2 using a standard free GitHub-hosted runner.
+No local controller cancels, changes runner variables, or reruns this test.
 
-This verifies a controlled Blacksmith-unavailable to GitHub execution path. It does
-not simulate a real Blacksmith billing outage or alter production router state.
-No artifacts, caches, dependencies, or paid GitHub runners are used.
+This is a controlled unavailable-provider test. Blacksmith is disabled for this
+public-only profile, and private organization compute credit remains independently
+guarded. The public eligibility proof is bound to this repository ID; its org
+variable must select this repository alone. No billing settings are changed.
 
-An initial attempt to force an outage using an extra Blacksmith label instead ran
-successfully on Blacksmith. The controlled outage uses a hold label instead, and
-the already completed initial job is never retried.
+Earlier local-policy canaries are retained as historical runs; those did not test
+Cloudflare's full dispatch path. A first label experiment ran harmlessly within
+Blacksmith's existing free allowance and was never retried.
