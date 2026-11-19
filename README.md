@@ -19,3 +19,6 @@ variable must select this repository alone. No billing settings are changed.
 Earlier local-policy canaries are retained as historical runs; those did not test
 Cloudflare's full dispatch path. A first label experiment ran harmlessly within
 Blacksmith's existing free allowance and was never retried.
+
+
+Recovery stress fixture: main advanced after completed probe 44532516579; no product code or credentials.
