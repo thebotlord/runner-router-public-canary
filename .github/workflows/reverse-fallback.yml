@@ -1,0 +1,13 @@
+name: Reverse fallback canary
+on:
+  push:
+    branches: [main]
+permissions: {}
+jobs:
+  identity:
+    runs-on: ${{ fromJSON(vars.CANARY_RUNNER) }}
+    timeout-minutes: 1
+    steps:
+      - name: Print harmless runner identity
+        shell: bash
+        run: node -e 'console.log(JSON.stringify({canary:"reverse-fallback",platform:process.platform,arch:process.arch,runner:process.env.RUNNER_NAME,environment:process.env.RUNNER_ENVIRONMENT}))'
